@@ -4,6 +4,7 @@ import life.majiang.mycommunity.dto.AccessTokenDTO;
 import life.majiang.mycommunity.dto.GithubUser;
 import life.majiang.mycommunity.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,13 +15,20 @@ public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
 
+    @Value("${github.client.id}")
+    private String clientId;
+    @Value("${github.client.secret}")
+    private String clientSecret;
+    @Value("${github.redirect.uri}")
+    private String redirectUri;
+
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code")String code,
                            @RequestParam(name = "state")String state){
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
-        accessTokenDTO.setClient_id("d496abd816eab5be73f8");
-        accessTokenDTO.setClient_secret("cb84e2dc9dfecd065de9c69e350c3d16f9f2ff49");
-        accessTokenDTO.setRedirect_uri("http://localhost:8887/callback");
+        accessTokenDTO.setClient_id(clientId);
+        accessTokenDTO.setClient_secret(clientSecret);
+        accessTokenDTO.setRedirect_uri(redirectUri);
         accessTokenDTO.setCode(code);
         accessTokenDTO.setState(state);
 
