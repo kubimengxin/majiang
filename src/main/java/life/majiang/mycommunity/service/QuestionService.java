@@ -4,6 +4,7 @@ import life.majiang.mycommunity.dto.PaginationDTO;
 import life.majiang.mycommunity.dto.QuestionDTO;
 import life.majiang.mycommunity.exception.CustomizeErrorCode;
 import life.majiang.mycommunity.exception.CustomizeException;
+import life.majiang.mycommunity.mapper.QuestionExtMapper;
 import life.majiang.mycommunity.mapper.QuestionMapper;
 import life.majiang.mycommunity.mapper.UserMapper;
 import life.majiang.mycommunity.model.Question;
@@ -22,6 +23,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -143,5 +147,12 @@ public class QuestionService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
+    }
+
+    public void incView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }
